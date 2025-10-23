@@ -1,35 +1,57 @@
-# Excel Visualizer - MERN Stack Application
+# Excel Visualizer - Modern MERN Stack Analytics Platform
 
-A complete MERN stack application for uploading, parsing, and visualizing Excel data with interactive 2D and 3D charts.
+A powerful, enterprise-ready MERN stack application for sophisticated data analysis and visualization of Excel data with interactive 2D and 3D charts. Transform your spreadsheet data into meaningful insights with our advanced visualization tools.
 
-## 🚀 Features
+## ⭐ Key Features
 
-- **Excel File Upload & Parsing**: Upload .xls or .xlsx files with automatic parsing
-- **Dynamic Data Mapping**: Choose X-axis and Y-axis columns dynamically
-- **Interactive Charts**: 2D charts (Chart.js) and 3D visualizations (Three.js)
-- **Export Capabilities**: Download charts as PNG or PDF
-- **User Authentication**: JWT-based signup/login system
-- **Admin Dashboard**: Admin can view and manage all user uploads
-- **User Dashboard**: View upload history and generated graphs
-- **Responsive Design**: Modern UI built with Tailwind CSS
+- **Smart Excel Processing**
+  - Support for .xls, .xlsx, and .csv files
+  - Automatic column type detection
+  - Intelligent data cleaning and validation
+  - Handles large datasets efficiently
+
+- **Advanced Visualization**
+  - Interactive 2D charts powered by Chart.js
+  - Immersive 3D visualizations using Three.js
+  - Real-time data updates
+  - Custom chart templates
+
+- **Enterprise Features**
+  - Role-based access control (RBAC)
+  - Secure JWT authentication
+  - Data encryption at rest
+  - Audit logging
+  - API rate limiting
+
+- **Modern UI/UX**
+  - Responsive Tailwind CSS design
+  - Dark/Light theme support
+  - Accessible (WCAG 2.1 compliant)
+  - Progressive Web App (PWA) ready
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React.js
-- Redux Toolkit (State Management)
-- Chart.js (2D Charts)
-- Three.js (3D Visualizations)
-- Tailwind CSS (Styling)
+- React.js 18+ with TypeScript
+- Redux Toolkit & RTK Query
+- Chart.js v4 (2D Charts)
+- Three.js r160+ (3D Visualizations)
+- Tailwind CSS v3
+- Jest & React Testing Library
+- PWA with Workbox
+- WebAssembly for heavy computations
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB (Database)
-- Mongoose (ODM)
-- Multer (File Uploads)
-- SheetJS/xlsx (Excel Parsing)
-- JWT (Authentication)
+- Node.js v18+ with Express.js
+- TypeScript for type safety
+- MongoDB with Mongoose ODM
+- Redis for caching
+- Multer for file uploads
+- SheetJS/xlsx for Excel parsing
+- JWT & OAuth2 authentication
+- Socket.IO for real-time updates
+- Jest for testing
+- PM2 for process management
 
 ## 📁 Project Structure
 
@@ -42,22 +64,50 @@ Excel-Visualizer/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB
-- npm or yarn
+- Node.js (v18 or higher)
+- MongoDB (v7.0+)
+- npm (v9+) or yarn (v4+)
+- Git
+
+### Environment Setup
+1. Clone the repository
+```bash
+git clone https://github.com/ParasChavan02/Excel-Analytics.git
+cd Excel-Analytics
+```
+
+2. Set up environment variables
+```bash
+# Backend (.env)
+cp backend/.env.example backend/.env
+# Frontend (.env)
+cp frontend/.env.example frontend/.env
+```
 
 ### Backend Setup
 ```bash
 cd backend
 npm install
+# Development mode
 npm run dev
+# Production mode
+npm run build && npm start
 ```
 
 ### Frontend Setup
 ```bash
 cd frontend
 npm install
+# Development mode
 npm start
+# Production build
+npm run build
+```
+
+### Docker Setup (Optional)
+```bash
+# Build and run using Docker Compose
+docker-compose up -d
 ```
 
 ## 📖 Documentation
@@ -140,68 +190,153 @@ The frontend communicates with the backend through RESTful APIs:
 
 ## 💾 Database Schema
 
+All models are strictly typed using TypeScript interfaces and Mongoose schemas.
+
 ### User Model
-```javascript
-{
-  username: String,
-  email: String,
-  password: String (hashed),
-  firstName: String,
-  lastName: String,
-  role: ['user', 'admin'],
-  isActive: Boolean,
-  lastLogin: Date,
-  createdAt: Date
+```typescript
+interface IUser {
+  username: string;
+  email: string;
+  password: string; // Argon2 hashed
+  firstName: string;
+  lastName: string;
+  role: 'user' | 'admin' | 'analyst';
+  isActive: boolean;
+  twoFactorEnabled: boolean;
+  lastLogin: Date;
+  preferences: {
+    theme: 'light' | 'dark' | 'system';
+    notifications: boolean;
+    defaultChartType: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
 
 ### File Model
-```javascript
-{
-  filename: String,
-  originalName: String,
-  path: String,
-  size: Number,
-  mimetype: String,
-  uploadedBy: ObjectId (User),
-  status: ['uploading', 'processing', 'completed', 'failed'],
+```typescript
+interface IFile {
+  filename: string;
+  originalName: string;
+  path: string;
+  size: number;
+  mimetype: string;
+  uploadedBy: Types.ObjectId;
+  status: 'uploading' | 'processing' | 'completed' | 'failed';
   processedData: {
-    headers: [String],
-    rows: [Mixed],
-    totalRows: Number,
-    totalColumns: Number
-  },
-  metadata: Object,
-  charts: [ObjectId (Chart)],
-  isPublic: Boolean,
-  tags: [String],
-  description: String,
-  createdAt: Date
+    headers: string[];
+    rows: unknown[];
+    totalRows: number;
+    totalColumns: number;
+    dataTypes: Record<string, string>;
+    summary: {
+      numericalColumns: string[];
+      categoricalColumns: string[];
+      dateColumns: string[];
+    };
+  };
+  metadata: Record<string, unknown>;
+  charts: Types.ObjectId[];
+  isPublic: boolean;
+  tags: string[];
+  description: string;
+  version: number;
+  lastAccessed: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
 
 ### Chart Model
-```javascript
-{
-  title: String,
-  description: String,
-  chartType: String,
-  dimension: ['2d', '3d'],
-  fileId: ObjectId (File),
-  createdBy: ObjectId (User),
+```typescript
+interface IChart {
+  title: string;
+  description: string;
+  chartType: string;
+  dimension: '2d' | '3d';
+  fileId: Types.ObjectId;
+  createdBy: Types.ObjectId;
   config: {
-    xAxis: Object,
-    yAxis: Object,
-    zAxis: Object,
-    colors: Object,
-    options: Object
-  },
-  chartData: Object,
-  exportFormats: [String],
-  isPublic: Boolean,
-  views: Number,
-  likes: [ObjectId (User)],
-  tags: [String],
-  createdAt: Date
+    xAxis: ChartAxisConfig;
+    yAxis: ChartAxisConfig;
+    zAxis?: ChartAxisConfig;
+    colors: ColorConfig;
+    animations: AnimationConfig;
+    options: ChartOptions;
+  };
+  chartData: unknown;
+  exportFormats: string[];
+  isPublic: boolean;
+  views: number;
+  likes: Types.ObjectId[];
+  tags: string[];
+  thumbnail: string;
+  sharing: {
+    isShareable: boolean;
+    password?: string;
+    expiresAt?: Date;
+  };
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
+```
+
+## 🔒 Security Features
+
+- **Authentication & Authorization**
+  - JWT with automatic refresh tokens
+  - OAuth2 integration (Google, GitHub)
+  - Two-factor authentication (2FA)
+  - Role-based access control (RBAC)
+
+- **Data Security**
+  - AES-256 encryption for sensitive data
+  - HTTPS-only communication
+  - CORS protection
+  - Rate limiting and brute force protection
+  - Input validation and sanitization
+  - XSS and CSRF protection
+
+- **Compliance**
+  - GDPR-ready data handling
+  - Configurable data retention policies
+  - Audit logging
+  - Data export capabilities
+
+## 📊 Performance Optimization
+
+- **Frontend**
+  - Code splitting and lazy loading
+  - Service Worker caching
+  - WebAssembly for heavy computations
+  - Virtual scrolling for large datasets
+  - Optimized bundle size
+
+- **Backend**
+  - Redis caching layer
+  - Database indexing
+  - Stream processing for large files
+  - Horizontal scaling support
+  - Load balancing ready
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🌟 Support
+
+If you found this project helpful, please consider giving it a star ⭐️
+
+---
+Built with ❤️ by [Paras Chavan](https://github.com/ParasChavan02)
 ```

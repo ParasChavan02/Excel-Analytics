@@ -1,0 +1,170 @@
+/* Global responsive styles */
+
+/* Custom container sizes */
+@media (min-width: 1400px) {
+  .container-xxl {
+    max-width: 1320px;
+  }
+}
+
+/* Custom spacing utilities */
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 1rem; }
+.gap-4 { gap: 1.5rem; }
+
+/* Card hover effects */
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive typography */
+@media (max-width: 576px) {
+  .display-1 { font-size: 3.5rem; }
+  .display-2 { font-size: 3rem; }
+  .display-3 { font-size: 2.5rem; }
+  .display-4 { font-size: 2rem; }
+  .display-5 { font-size: 1.75rem; }
+  .display-6 { font-size: 1.5rem; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Form controls */
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Button focus states */
+.btn:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Responsive table utilities */
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom modal sizes */
+@media (min-width: 576px) {
+  .modal-dialog-scrollable {
+    max-height: calc(100vh - 3.5rem);
+  }
+}
+
+/* Toast positioning */
+.toast-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1050;
+}
+
+/* Responsive images */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive iframe */
+.responsive-iframe {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.responsive-iframe iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Utility classes for spacing */
+.section-padding {
+  padding: 3rem 0;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 2rem 0;
+  }
+}
+
+/* Custom shadows */
+.shadow-hover:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive borders */
+@media (max-width: 576px) {
+  .border-sm-0 {
+    border: 0 !important;
+  }
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive visibility helpers */
+@media (max-width: 576px) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .hide-sm {
+    display: none !important;
+  }
+}
+
+/* Chart container responsive sizing */
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+}
+
+@media (min-width: 768px) {
+  .chart-container {
+    min-height: 400px;
+  }
+}

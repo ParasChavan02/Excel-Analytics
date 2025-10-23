@@ -2,16 +2,42 @@ import React from 'react';
 
 const FileList: React.FC = () => {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">My Files</h1>
-        <p className="mt-1 text-sm text-gray-600">
-          Manage your uploaded Excel files
-        </p>
+    <div className="container-fluid py-4">
+      <div className="row mb-4">
+        <div className="col-12">
+          <h1 className="display-6 fw-bold text-dark mb-2">My Files</h1>
+          <p className="text-muted">
+            Manage your uploaded Excel files
+          </p>
+        </div>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow">
-        <p className="text-center text-gray-600">File list component - Coming soon!</p>
+      <div className="row">
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>File Name</th>
+                      <th className="d-none d-md-table-cell">Upload Date</th>
+                      <th className="d-none d-lg-table-cell">Size</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colSpan={4} className="text-center text-muted py-4">
+                        File list component - Coming soon!
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

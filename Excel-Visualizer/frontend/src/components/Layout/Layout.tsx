@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { logout } from '../../store/slices/authSlice';
 import { toggleSidebar } from '../../store/slices/uiSlice';
+import './Layout.css';
 import { 
   HiOutlineHome, 
   HiOutlineDocumentText, 
@@ -63,9 +64,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-vh-100 bg-light d-flex">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'w-64' : 'w-16'} bg-white shadow-lg transition-all duration-300 flex flex-col`}>
+      <div className={`${isSidebarOpen ? 'width-240' : 'width-60'} bg-white shadow position-relative transition-all d-flex flex-column d-none d-md-flex`}>
         {/* Logo */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center">
@@ -132,16 +133,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-grow-1 d-flex flex-column">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
+        <header className="bg-white shadow-sm border-bottom px-3 px-md-4 py-3">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center">
               <button
                 onClick={() => dispatch(toggleSidebar())}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="btn btn-light rounded-circle d-md-none me-2"
               >
-                <HiOutlineMenuAlt3 className="w-5 h-5 text-gray-600" />
+                <HiOutlineMenuAlt3 className="fs-5 text-secondary" />
               </button>
               <h1 className="ml-4 text-2xl font-semibold text-gray-900">
                 {/* Dynamic title based on route */}
@@ -157,28 +158,51 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
 
             {/* Quick Actions */}
-            <div className="flex items-center space-x-3">
+            <div className="d-none d-sm-flex gap-2">
               <Link
                 to="/files/upload"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="btn btn-primary"
               >
                 Upload File
               </Link>
               <Link
                 to="/charts/create"
-                className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors"
+                className="btn btn-outline-primary"
               >
                 Create Chart
               </Link>
+            </div>
+            {/* Mobile Menu Button */}
+            <div className="d-sm-none">
+              <button
+                className="btn btn-light"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <HiOutlineMenuAlt3 className="fs-5" />
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end">
+                <li><Link className="dropdown-item" to="/files/upload">Upload File</Link></li>
+                <li><Link className="dropdown-item" to="/charts/create">Create Chart</Link></li>
+              </ul>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-6 overflow-auto">
-          {children}
+        <main className="flex-grow-1 main-content overflow-y-auto">
+          <div className="container-fluid">
+            {children}
+          </div>
         </main>
       </div>
+
+      {/* Mobile Sidebar Backdrop */}
+      <div 
+        className={`sidebar-backdrop ${isSidebarOpen ? 'show' : ''}`}
+        onClick={() => dispatch(toggleSidebar())}
+      ></div>
     </div>
   );
 };
